@@ -62,6 +62,7 @@
                         </li>
                     {% endif %}
                     {% if services.customer.getContactId() %}
+                        <!-- fake basket DefaultHeader -->
                         <li class="list-inline-item control-basket">
                             <a v-toggle-basket-preview href="#" class="toggle-basket-preview">
                                 {% if config("Ceres.header.basket_values") != "sum" %}
