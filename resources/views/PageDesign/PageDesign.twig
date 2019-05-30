@@ -77,13 +77,15 @@
         {% endblock %}
     </div>
 
-    {% if basket is not defined %}
-        {% set basket = services.basket.getBasketForTemplate() %}
-    {% endif %}
-    {% if ceresConfig.basket.previewType == "right" %}
-        <div class="wrapper wrapper-right">
-            <basket-preview :show-net-prices={{ showNetPrices | json_encode }}></basket-preview>
-        </div>
+    {% if services.customer.getContactId() %}
+        {% if basket is not defined %}
+            {% set basket = services.basket.getBasketForTemplate() %}
+        {% endif %}
+        {% if ceresConfig.basket.previewType == "right" %}
+            <div class="wrapper wrapper-right">
+                <basket-preview :show-net-prices={{ showNetPrices | json_encode }}></basket-preview>
+            </div>
+        {% endif %}
     {% endif %}
 
     <div class="wrapper wrapper-bottom">
@@ -142,9 +144,11 @@
         </div>
         <!-- ./REGISTRATION MODAL -->
 
-        <!-- BASKET MODAL -->
-        <add-item-to-basket-overlay :basket-add-information="{{ ceresConfig.basket.addItemToBasketConfirm | json_encode() }}"></add-item-to-basket-overlay>
-        <!-- ./BASKET MODAL -->
+        {% if services.customer.getContactId() %}
+            <!-- BASKET MODAL -->
+            <add-item-to-basket-overlay :basket-add-information="{{ ceresConfig.basket.addItemToBasketConfirm | json_encode() }}"></add-item-to-basket-overlay>
+            <!-- ./BASKET MODAL -->
+        {% endif %}
 
         <!-- PASSWORD RESET MODAL -->
         <forgot-password-modal></forgot-password-modal>
@@ -286,7 +290,7 @@
                 if (headerLoaded && !App.isShopBuilder)
                 {
                     var absolutePos = 0;
-                    var fixedElementsHeight = 0; 
+                    var fixedElementsHeight = 0;
                     var offset = 0;
                     var scrollTop = window.pageYOffset;
                     var zIndex = 100;
@@ -295,7 +299,7 @@
                     {
                         var elem = headerChildren[i];
                         var elemHeight = allElementHeights[i];
-                        
+
                         offset = absolutePos - scrollTop;
                         elem.style.position = "absolute";
                         elem.style.zIndex = zIndex;
@@ -305,9 +309,9 @@
                         {
                             if (offset < 0)
                             {
-                                elem.style.top = 0; 
+                                elem.style.top = 0;
                             }
-                            else 
+                            else
                             {
                                 elem.style.top = offset + 'px';
                             }
@@ -317,9 +321,9 @@
                                 elem.style.top = fixedElementsHeight + 'px';
                             }
 
-                            fixedElementsHeight = fixedElementsHeight + elemHeight;  
-                        } 
-                        else 
+                            fixedElementsHeight = fixedElementsHeight + elemHeight;
+                        }
+                        else
                         {
                             elem.style.top = offset + 'px';
                         }
