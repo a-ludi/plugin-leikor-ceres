@@ -1,6 +1,6 @@
 {
-    "version"           : "0.0.1+ceres-4.0.1",
-    "name"              : "CeresLEIKOR",
+    "version"           : "4.0.1",
+    "name"              : "Ceres",
     "description"       : "This is a modified version of the Ceres plugin for LEIKOR.",
     "author"            : "Arne Ludwig",
     "license"           : "AGPL-3.0",
