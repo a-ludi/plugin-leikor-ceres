@@ -126,6 +126,16 @@
                             {{ Twig.endif() }}
                         {% endif %}
 
+                        {% if enableBasketPreview %}
+                            <!-- enableBasketPreview: yes -->
+                        {% else %}
+                            <!-- enableBasketPreview: no -->
+                        {% endif %}
+                        {% if services.customer.getContactId() %}
+                            <!-- contactId: yes ({{ services.customer.getContactId() }}) -->
+                        {% else %}
+                            <!-- contactId: no ({{ services.customer.getContactId() }}) -->
+                        {% endif %}
                         {% if enableBasketPreview and services.customer.getContactId() %}
                             <!-- fake basket TopBarWidget -->
                             <li class="list-inline-item control-basket">
