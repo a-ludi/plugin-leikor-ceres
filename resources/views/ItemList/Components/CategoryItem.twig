@@ -75,7 +75,8 @@
                                 </div>
 
                                 <div class="price">
-                                    ${ (graduatedPrices[graduatedPrices.length - 1].unitPrice.formatted || item.prices.default.unitPrice.formatted) | specialOffer(item.prices, "unitPrice", "formatted") } *
+                                    ${ debugger }
+                                    ${ item.prices.default.unitPrice.formatted | specialOffer(item.prices, "unitPrice", "formatted") } *
                                 </div>
                             </div>
                         </div>
