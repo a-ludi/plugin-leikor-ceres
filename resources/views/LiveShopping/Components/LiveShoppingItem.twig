@@ -35,7 +35,11 @@
                                     :is-active-by-stock="isActiveByStock">
                     <template #after-item-name>
                         <div class="live-shopping-add-to-basket">
-                            {{ AddToBasket.printVueComponent( "currentOffer.item" ) }}
+                            {% if services.customer.getContactId() %}
+                                {{ AddToBasket.printVueComponent( "currentOffer.item" ) }}
+                            {% else %}
+                                {{ AddToBasket.printVueComponent( "currentOffer.item", false, false, { ":has-price": "false" } ) }}
+                            {% endif %}
                         </div>
                     </template>
                 </live-shopping-details>

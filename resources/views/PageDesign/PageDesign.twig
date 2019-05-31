@@ -77,13 +77,15 @@
         {% endblock %}
     </div>
 
-    {% if basket is not defined %}
-        {% set basket = services.basket.getBasketForTemplate() %}
-    {% endif %}
-    {% if ceresConfig.basket.previewType == "right" %}
-        <div class="wrapper wrapper-right">
-            <basket-preview :show-net-prices={{ showNetPrices | json_encode }}></basket-preview>
-        </div>
+    {% if services.customer.getContactId() %}
+        {% if basket is not defined %}
+            {% set basket = services.basket.getBasketForTemplate() %}
+        {% endif %}
+        {% if ceresConfig.basket.previewType == "right" %}
+            <div class="wrapper wrapper-right">
+                <basket-preview :show-net-prices={{ showNetPrices | json_encode }}></basket-preview>
+            </div>
+        {% endif %}
     {% endif %}
 
     <div class="wrapper wrapper-bottom">
@@ -142,9 +144,11 @@
         </div>
         <!-- ./REGISTRATION MODAL -->
 
-        <!-- BASKET MODAL -->
-        <add-item-to-basket-overlay :basket-add-information="{{ ceresConfig.basket.addItemToBasketConfirm | json_encode() }}"></add-item-to-basket-overlay>
-        <!-- ./BASKET MODAL -->
+        {% if services.customer.getContactId() %}
+            <!-- BASKET MODAL -->
+            <add-item-to-basket-overlay :basket-add-information="{{ ceresConfig.basket.addItemToBasketConfirm | json_encode() }}"></add-item-to-basket-overlay>
+            <!-- ./BASKET MODAL -->
+        {% endif %}
 
         <!-- PASSWORD RESET MODAL -->
         <forgot-password-modal></forgot-password-modal>
