@@ -60,9 +60,6 @@
                         ${ item | itemName }<!--
                         --><span v-for="attribute in item.groupedAttributes">${ "Ceres::Template.itemGroupedAttribute" | translate(attribute) }</span>
                     </a>
-                    <!-- ItemInfo -->
-                    <!-- item.prices: {{ item.prices }} -->
-                    <!-- graduatedPrices: {{ graduatedPrices }} -->
                     {% if services.customer.getContactId() %}
                         <div class="thumb-meta">
                             <slot name="before-prices"></slot>
@@ -78,7 +75,7 @@
                                 </div>
 
                                 <div class="price">
-                                    ${ item.prices.default.unitPrice.formatted | specialOffer(item.prices, "unitPrice", "formatted") } *
+                                    ${ (graduatedPrices[graduatedPrices.length - 1].unitPrice.formatted || item.prices.default.unitPrice.formatted) | specialOffer(item.prices, "unitPrice", "formatted") } *
                                 </div>
                             </div>
                         </div>
