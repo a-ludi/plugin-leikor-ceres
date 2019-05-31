@@ -75,7 +75,7 @@ class TemplateServiceProvider extends ServiceProvider
     public function register(){
         $this->getApplication()->singleton( CeresConfig::class );
     }
-
+    
     public function boot(Twig $twig, Dispatcher $eventDispatcher, ConfigRepository $config)
     {
         // Register Twig String Loader to use function: template_from_string

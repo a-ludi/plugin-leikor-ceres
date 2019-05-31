@@ -1,7 +1,6 @@
 {% import "Ceres::PageDesign.Macros.LayoutContainer" as LayoutContainer %}
 
 <header id="page-header" class="top-bar fixed-top">
-    <!-- DefaultHeader Fr 31 Mai 2019 09:43:50 CEST -->
     <div>
         <div class="container-max">
             <div class="row mx-0">
@@ -62,12 +61,6 @@
                             </wish-list-count>
                         </li>
                     {% endif %}
-                    {% if services.customer.getContactId() %}
-                        <!-- contactId: yes ({{ services.customer.getContactId() }}) -->
-                    {% else %}
-                        <!-- contactId: no ({{ services.customer.getContactId() }}) -->
-                    {% endif %}
-                    <!-- DefaultHeader -->
                     {% if services.customer.getContactId() %}
                         <li class="list-inline-item control-basket">
                             <a v-toggle-basket-preview href="#" class="toggle-basket-preview">

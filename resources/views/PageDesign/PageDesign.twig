@@ -27,8 +27,6 @@
 
 <html lang="{{ lang }}" data-framework="vue" prefix="og: http://ogp.me/ns#">
 
-<!-- Fr 31 Mai 2019 09:39:24 CEST -->
-
 <head>
     {% include getPartial('head') %}
 
@@ -292,7 +290,7 @@
                 if (headerLoaded && !App.isShopBuilder)
                 {
                     var absolutePos = 0;
-                    var fixedElementsHeight = 0;
+                    var fixedElementsHeight = 0; 
                     var offset = 0;
                     var scrollTop = window.pageYOffset;
                     var zIndex = 100;
@@ -301,7 +299,7 @@
                     {
                         var elem = headerChildren[i];
                         var elemHeight = allElementHeights[i];
-
+                        
                         offset = absolutePos - scrollTop;
                         elem.style.position = "absolute";
                         elem.style.zIndex = zIndex;
@@ -311,9 +309,9 @@
                         {
                             if (offset < 0)
                             {
-                                elem.style.top = 0;
+                                elem.style.top = 0; 
                             }
-                            else
+                            else 
                             {
                                 elem.style.top = offset + 'px';
                             }
@@ -323,9 +321,9 @@
                                 elem.style.top = fixedElementsHeight + 'px';
                             }
 
-                            fixedElementsHeight = fixedElementsHeight + elemHeight;
-                        }
-                        else
+                            fixedElementsHeight = fixedElementsHeight + elemHeight;  
+                        } 
+                        else 
                         {
                             elem.style.top = offset + 'px';
                         }
