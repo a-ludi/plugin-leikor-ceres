@@ -75,7 +75,7 @@ class TemplateServiceProvider extends ServiceProvider
     public function register(){
         $this->getApplication()->singleton( CeresConfig::class );
     }
-    
+
     public function boot(Twig $twig, Dispatcher $eventDispatcher, ConfigRepository $config)
     {
         // Register Twig String Loader to use function: template_from_string
@@ -83,6 +83,9 @@ class TemplateServiceProvider extends ServiceProvider
         $twig->addExtension(TwigStyleScriptTagFilter::class);
         $twig->addExtension(TwigLayoutContainerInternal::class);
         $twig->addExtension(TwigJsonDataContainer::class);
+
+        $twig->enableDebug();
+        $twig->addExtension(new Twig\Extension\DebugExtension());
 
         $eventDispatcher->listen('IO.tpl.*', function (TemplateContainer $templateContainer, $templateData = []) {
             if ( !$templateContainer->hasTemplate() )
