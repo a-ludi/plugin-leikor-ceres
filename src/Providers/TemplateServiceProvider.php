@@ -84,9 +84,6 @@ class TemplateServiceProvider extends ServiceProvider
         $twig->addExtension(TwigLayoutContainerInternal::class);
         $twig->addExtension(TwigJsonDataContainer::class);
 
-        $twig->enableDebug();
-        $twig->addExtension(new Twig\Extension\DebugExtension());
-
         $eventDispatcher->listen('IO.tpl.*', function (TemplateContainer $templateContainer, $templateData = []) {
             if ( !$templateContainer->hasTemplate() )
             {
