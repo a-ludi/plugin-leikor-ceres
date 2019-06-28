@@ -10,11 +10,10 @@
 {{ Twig.import("LayoutContainer", "Ceres::PageDesign.Macros.LayoutContainer") }}
 {{ Twig.component("Ceres::Checkout.Components.ShippingProfileSelect") }}
 
-{{ Twig.set("overrideShippingProfiles", Twig.call("LayoutContainer.show", ["Ceres::Checkout.ShippingProfileList"])) }}
 {% set hintText = widget.settings.hintText.mobile %}
 
-<div class="widget widget-provider-select widget-{{ widget.settings.appearance.mobile | default("primary") }} 
-    {% if spacingMargin | length > 0 %} {{ spacingMargin }}{% endif %}" 
+<div class="widget widget-provider-select widget-{{ widget.settings.appearance.mobile | default("primary") }}
+    {% if spacingMargin | length > 0 %} {{ spacingMargin }}{% endif %}"
     {% if inlineMargin | length > 0 %} style="{{ inlineMargin }}"{% endif %}>
     <div {{ WidgetHelper.makeEditable("hintText", TOOLBAR_LAYOUT.ALL, isPreview) }}>
         {% if hintText is empty %}
@@ -25,16 +24,6 @@
     </div>
 
     {{ Twig.print(Twig.call("LayoutContainer.show", ["Ceres::Checkout.BeforeShippingProfileList"])) }}
-    {{ Twig.if("overrideShippingProfiles | trim is empty") }}
-        <div class="shipping-method-select">
-            <shipping-profile-select
-                {% if spacingPadding | length > 0 %}padding-classes="{{ spacingPadding }}"{% endif %}
-                {% if inlinePadding | length > 0 %}padding-inline-styles="{{ inlinePadding }}"{% endif %}>
-            </shipping-profile-select>
-        </div>
-    {{ Twig.else() }}
-        {{ Twig.print("overridePaymentList") }}
-    {{ Twig.endif() }}
 
     {{ Twig.print(Twig.call("LayoutContainer.show", ["Ceres::Checkout.AfterShippingProfileList"])) }}
 </div>
