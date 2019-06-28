@@ -9,7 +9,7 @@
 {% set searchStyle                  = widget.settings.searchStyle.mobile %}
 {% set enableWishList               = widget.settings.enableWishList.mobile %}
 {% set enableBasketPreview          = widget.settings.enableBasketPreview.mobile %}
-{% set basketValues                 = widget.settings.basketValues.mobile %}
+{% set basketValues                 = (widget.settings.basketValues.mobile and not widget.settings.enableLogin.mobile) %}
 {% set showItemImages               = widget.settings.showItemImages.mobile %}
 {% set forwardToSingleItem          = widget.settings.forwardToSingleItem.mobile %}
 
