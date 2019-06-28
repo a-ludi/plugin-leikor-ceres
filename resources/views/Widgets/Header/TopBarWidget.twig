@@ -8,8 +8,8 @@
 {% set enableCurrencySelect         = widget.settings.enableCurrencySelect.mobile %}
 {% set searchStyle                  = widget.settings.searchStyle.mobile %}
 {% set enableWishList               = widget.settings.enableWishList.mobile %}
-{% set enableBasketPreview          = widget.settings.enableBasketPreview.mobile %}
-{% set basketValues                 = (widget.settings.basketValues.mobile and not widget.settings.enableLogin.mobile) %}
+{% set enableBasketPreview          = (widget.settings.enableBasketPreview.mobile and not widget.settings.enableLogin.mobile) %}
+{% set basketValues                 = widget.settings.basketValues.mobile %}
 {% set showItemImages               = widget.settings.showItemImages.mobile %}
 {% set forwardToSingleItem          = widget.settings.forwardToSingleItem.mobile %}
 
