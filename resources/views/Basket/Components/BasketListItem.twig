@@ -9,9 +9,9 @@
 
 <script type="x/template" id="vue-basket-list-item">
     <div class="basket-item-container" :class="{ 'basket-small': size === 'small', 'basket-large': size === 'large' }">
-        
+
         {{ LayoutContainer.show("Ceres::BasketList.BeforeItem") }}
-        
+
         <div class="basket-item component-loading with-icon" :class="{ 'sending isLoading': waiting, 'isLoading': isCheckoutReadonly }">
 
             <div class="image-container">
@@ -70,7 +70,7 @@
                             {% endif %}
                         </div>
                     </div>
-    
+
                     <div class="basket-item-container-right">
                         <div class="qty-box-container">
                             <quantity-input
@@ -82,10 +82,10 @@
                                     :max="basketItem.variation.data.variation.maximumOrderQuantity"
                                     :interval="basketItem.variation.data.variation.intervalOrderQuantity"></quantity-input>
                         </div>
-    
+
                         <div class="price-box">
                             <div class="item-total-price">${ itemTotalPrice | currency(basketItem.variation.data.prices.default.currency) }</div>
-                
+
                             <div class="item-remove-container">
                                 <div class="btn btn-sm item-remove-button" :class="{ 'disabled': waiting || isBasketLoading || isCheckoutReadonly || waitingForDelete }" @click="deleteItem">
                                     <span>
@@ -116,7 +116,7 @@
                         </li>
                     </ul>
                 </div>
-    
+
                 <div class="item-additional-information-container">
                     <div class="item-additional-information" v-if="size === 'large' && showMoreInformation">
                         {% if "basket.item.item_id" in basketDetailsData %}
@@ -130,13 +130,6 @@
                             <div v-if="basketItem.variation.data.variation.number">
                                 <strong>{{ trans("Ceres::Template.basketItemNumber") }}:</strong>
                                 <span>${ basketItem.variation.data.variation.number }</span>
-                            </div>
-                        {% endif %}
-
-                        {% if "basket.item.availability" in basketDetailsData %}
-                            <div v-if="basketItem.variation.data.variation.availability.names.name">
-                                <strong>{{ trans("Ceres::Template.basketAvailability") }}:</strong>
-                                <span>${ basketItem.variation.data.variation.availability.names.name }</span>
                             </div>
                         {% endif %}
 
@@ -156,8 +149,8 @@
             </div>
 
         </div>
-        
+
         {{ LayoutContainer.show("Ceres::BasketList.AfterItem") }}
-        
+
     </div>
 </script>
