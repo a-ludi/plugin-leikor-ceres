@@ -126,7 +126,7 @@
                             {{ Twig.endif() }}
                         {% endif %}
 
-                        {% if enableBasketPreview and not enableLogin %}
+                        {% if not enableLogin %}
                             <li class="list-inline-item control-basket">
                                 <a v-toggle-basket-preview href="#" class="toggle-basket-preview">
                                     {% if basketValues != "sum" %}
