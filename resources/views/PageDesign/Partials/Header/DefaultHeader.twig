@@ -61,7 +61,7 @@
                             </wish-list-count>
                         </li>
                     {% endif %}
-                    {% if services.customer.getContactId() %}
+                    {% if services.customer.getContactId() and services.customer.getContactClassId() != 13 %}
                         <li class="list-inline-item control-basket">
                             <a v-toggle-basket-preview href="#" class="toggle-basket-preview">
                                 {% if config("Ceres.header.basket_values") != "sum" %}

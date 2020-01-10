@@ -15,7 +15,7 @@
 <script type="x/template" id="vue-category-item">
     <article class="cmp cmp-product-thumb cmp-product-thumb--grid">
         <div class="thumb-inner" :class="paddingClasses" :style="paddingInlineStyles">
-            {% if services.customer.getContactId() %}
+            {% if services.customer.getContactId() and services.customer.getContactClassId() != 13 %}
                 {{ AddToBasket.printVueComponent( "item", true, false, { ":has-price": "item | hasItemDefaultPrice" }, "urlWithVariationId" ) }}
             {% else %}
                 {{ AddToBasket.printVueComponent( "item", true, false, { ":has-price": "false" }, "urlWithVariationId" ) }}
@@ -60,7 +60,7 @@
                         ${ item | itemName }<!--
                         --><span v-for="attribute in item.groupedAttributes">${ "Ceres::Template.itemGroupedAttribute" | translate(attribute) }</span>
                     </a>
-                    {% if services.customer.getContactId() %}
+                    {% if services.customer.getContactId() and services.customer.getContactClassId() != 13 %}
                         <div class="thumb-meta">
                             <slot name="before-prices"></slot>
 
