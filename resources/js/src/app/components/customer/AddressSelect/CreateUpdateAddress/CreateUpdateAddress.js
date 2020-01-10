@@ -1,7 +1,10 @@
-const NotificationService = require("services/NotificationService");
+import { isNullOrUndefined } from "../../../../helper/utils";
 
-import ValidationService from "services/ValidationService";
-import TranslationService from "services/TranslationService";
+const NotificationService = require("../../../../services/NotificationService");
+
+import ValidationService from "../../../../services/ValidationService";
+import TranslationService from "../../../../services/TranslationService";
+import Vue from "vue";
 
 Vue.component("create-update-address", {
 
@@ -188,6 +191,7 @@ Vue.component("create-update-address", {
                 NotificationService.error({ code: error.code, message: "" });
                 window.location.reload();
             }
+            else this._handleValidationErrors(error);
         },
 
         _syncOptionTypesAddressData()
@@ -200,54 +204,54 @@ Vue.component("create-update-address", {
                     switch (optionType.typeId)
                     {
                     case 1:
+                    {
+                        if (!isNullOrUndefined(this.addressData.vatNumber) && this.addressData.vatNumber !== optionType.value)
                         {
-                            if (this.addressData.vatNumber && this.addressData.vatNumber !== optionType.value)
-                            {
-                                optionType.value = this.addressData.vatNumber;
-                            }
+                            optionType.value = this.addressData.vatNumber;
+                        }
 
-                            break;
-                        }
+                        break;
+                    }
                     case 4:
+                    {
+                        if (!isNullOrUndefined(this.addressData.telephone) && this.addressData.telephone !== optionType.value)
                         {
-                            if (this.addressData.telephone && this.addressData.telephone !== optionType.value)
-                            {
-                                optionType.value = this.addressData.telephone;
-                            }
-                            break;
+                            optionType.value = this.addressData.telephone;
                         }
+                        break;
+                    }
                     case 6:
+                    {
+                        if (!isNullOrUndefined(this.addressData.postNumber) && this.addressData.postNumber !== optionType.value)
                         {
-                            if (this.addressData.postNumber && this.addressData.postNumber !== optionType.value)
-                            {
-                                optionType.value = this.addressData.postNumber;
-                            }
-                            break;
+                            optionType.value = this.addressData.postNumber;
                         }
+                        break;
+                    }
                     case 9:
+                    {
+                        if (!isNullOrUndefined(this.addressData.birthday) && this.addressData.birthday !== optionType.value)
                         {
-                            if (this.addressData.birthday && this.addressData.birthday !== optionType.value)
-                            {
-                                optionType.value = this.addressData.birthday;
-                            }
-                            break;
+                            optionType.value = this.addressData.birthday;
                         }
+                        break;
+                    }
                     case 11:
+                    {
+                        if (!isNullOrUndefined(this.addressData.title) && this.addressData.title !== optionType.value)
                         {
-                            if (this.addressData.title && this.addressData.title !== optionType.value)
-                            {
-                                optionType.value = this.addressData.title;
-                            }
-                            break;
+                            optionType.value = this.addressData.title;
                         }
+                        break;
+                    }
                     case 12:
+                    {
+                        if (!isNullOrUndefined(this.addressData.contactPerson) && this.addressData.contactPerson !== optionType.value)
                         {
-                            if (this.addressData.contactPerson && this.addressData.contactPerson !== optionType.value)
-                            {
-                                optionType.value = this.addressData.contactPerson;
-                            }
-                            break;
+                            optionType.value = this.addressData.contactPerson;
                         }
+                        break;
+                    }
                     }
                 }
             }

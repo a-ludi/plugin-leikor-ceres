@@ -21,16 +21,22 @@ export class StickyElement
         this.offsetTop = 0;
         this.minWidth = minWidth;
         this.isMinWidth = true;
-        this.resizeListener = this.checkMinWidth.bind(this);
-        window.addEventListener("resize", this.resizeListener);
         this.checkMinWidth();
+
+        this.resizeListener = this.checkMinWidth.bind(this);
+
+        window.addEventListener("resize", this.resizeListener);
 
         this.vm.$nextTick(() =>
         {
-            this.el.parentElement.__stickyElements = this.el.parentElement.__stickyElements || [];
-            this.el.parentElement.__stickyElements.push(this);
-            this.el.parentElement.__stickyElements.forEach(stickyElement => stickyElement.calculateOffset());
+            const containerElement = this.getContainerElement();
+
+            containerElement.__stickyElements = this.getContainerElement().__stickyElements || [];
+            containerElement.__stickyElements.push(this);
+            containerElement.__stickyElements.forEach(stickyElement => stickyElement.calculateOffset());
         });
+
+        el.classList.add("sticky-element");
     }
 
     enable()
@@ -45,8 +51,13 @@ export class StickyElement
             this.animationFrame = 0;
             this.placeholder = document.createElement("DIV");
             this.el.parentNode.insertBefore(this.placeholder, this.el);
-            this.eventListener = this.tick.bind(this);
-            this.offsetTop = document.getElementById("page-header").getBoundingClientRect().height;
+            this.eventListener = () =>
+            {
+                if (this.shouldUpdate())
+                {
+                    this.checkElement();
+                }
+            };
 
             document.addEventListener("storeChanged", this.eventListener);
             STICKY_EVENTS.forEach(event =>
@@ -85,6 +96,10 @@ export class StickyElement
             window.removeEventListener(event, this.eventListener);
         });
         this.eventListener = null;
+        if (this.animationFrame > 0)
+        {
+            cancelAnimationFrame(this.animationFrame);
+        }
         this.animationFrame = 0;
         this.enabled = false;
 
@@ -92,35 +107,25 @@ export class StickyElement
 
     tick()
     {
-        if (this.enabled && !this.isMinWidth)
+        if (this.shouldUpdate())
         {
-            if (this.animationFrame > 0)
-            {
-                cancelAnimationFrame(this.animationFrame);
-            }
-
-            this.animationFrame = requestAnimationFrame(() =>
-            {
-                this.checkElement();
-                this.updateStyles();
-                this.animationFrame = 0;
-            });
+            this.updateStyles();
         }
+        this.animationFrame = requestAnimationFrame(this.tick.bind(this));
+    }
+
+    shouldUpdate()
+    {
+        return (this.enabled && !this.isMinWidth) || (this.position || {}).isSticky;
     }
 
     checkElement(skipOffsetCalculation)
     {
-        /*
-        if (isNullOrUndefined(this.el) || isNullOrUndefined(this.placeholder))
-        {
-            return;
-        }
-        */
-        const oldValue          = this.position || {};
-        const elementRect       = this.el.getBoundingClientRect();
-        const placeholderRect   = this.placeholder.getBoundingClientRect();
-        const containerRect     = this.getContainerElement().getBoundingClientRect();
-        const maxBottom         = Math.min(containerRect.bottom - elementRect.height - this.offsetTop - this.offsetBottom, 0);
+        const oldValue        = this.position || {};
+        const elementRect     = this.el.getBoundingClientRect();
+        const placeholderRect = this.placeholder.getBoundingClientRect();
+        const containerRect   = this.getContainerElement().getBoundingClientRect();
+        const maxBottom       = Math.min(containerRect.bottom - elementRect.height - this.offsetTop - this.offsetBottom, 0);
 
         if (oldValue.height !== elementRect.height && !skipOffsetCalculation)
         {
@@ -145,7 +150,27 @@ export class StickyElement
         {
             return;
         }
-        this.offsetTop = document.getElementById("page-header").getBoundingClientRect().height;
+
+        this.offsetTop = 0;
+
+        // Check if Custom Header
+        if (document.querySelector("[data-header-offset]"))
+        {
+            const headerChildren = document.querySelector("[data-header-offset]").children;
+
+            for (let i = 0; i < headerChildren.length; i++)
+            {
+                if (!headerChildren[i].classList.contains("unfixed"))
+                {
+                    this.offsetTop += headerChildren[i].getBoundingClientRect().height;
+                }
+            }
+        }
+        else
+        {
+            this.offsetTop += document.getElementById("page-header").getBoundingClientRect().height;
+        }
+
         this.offsetBottom = 0;
         if (isNullOrUndefined(this.position))
         {
@@ -178,7 +203,8 @@ export class StickyElement
             top: null,
             left: null,
             width: null,
-            zIndex: null
+            zIndex: null,
+            transform: null
         };
 
         let placeholderStyles = {
@@ -189,15 +215,21 @@ export class StickyElement
         {
             styles = {
                 position:   "fixed",
-                top:        this.position.y + "px",
+                top:        0,
+                transform:  "translate3d(0, " + this.position.y + "px, 0)",
                 left:       this.position.x + "px",
-                width:      this.position.width + "px",
-                zIndex:     1
+                width:      this.position.width + "px"
             };
 
             placeholderStyles = {
                 paddingTop: this.position.height + "px"
             };
+
+            this.el.classList.add("is-sticky");
+        }
+        else
+        {
+            this.el.classList.remove("is-sticky");
         }
 
         applyStyles(this.el, styles);
@@ -228,6 +260,15 @@ export class StickyElement
 
     getContainerElement()
     {
+        if (this.el.dataset.hasOwnProperty("stickyContainer"))
+        {
+            const container = document.querySelector(this.el.dataset.stickyContainer);
+
+            if (!isNullOrUndefined(container))
+            {
+                return container;
+            }
+        }
         return this.el.parentElement;
     }
 
@@ -238,7 +279,9 @@ export class StickyElement
 
         if (idx >= 0)
         {
-            this.el.parentElement.__stickyElements.splice(idx, 1);
+            this.getContainerElement().__stickyElements.splice(idx, 1);
         }
+
+        this.el.classList.remove("sticky-element");
     }
 }
