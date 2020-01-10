@@ -9,6 +9,8 @@
 {% block PageBody %}
     {{ component( "Ceres::WishList.Components.WishList" ) }}
 
+    {% if enableBasketPreview and services.customer.getContactId() and services.customer.getContactClassId() != 13 %}
+
     <div class="page-content wishlist container-max mb-5">
         <div class="row mt-3">
             <div class="col-12">
@@ -20,4 +22,6 @@
 
          <wish-list></wish-list>
     </div>
+
+    {% endif %}
 {% endblock %}
