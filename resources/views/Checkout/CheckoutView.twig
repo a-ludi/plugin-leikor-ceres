@@ -45,6 +45,8 @@
     %}
 
     <div class="page-content checkout container-max">
+        {% if services.customer.getContactId() and services.customer.getContactClassId() != 13 %}
+
         {% set overrideCheckout = LayoutContainer.show("Ceres::Checkout") %}
         {% if overrideCheckout | trim is empty %}
             <div class="row mt-3">
@@ -209,8 +211,11 @@
                     </div>
                 </div>
             </checkout>
+
         {% else %}
             {{ overrideCheckout }}
+        {% endif %}
+
         {% endif %}
     </div>
 {% endblock %}
