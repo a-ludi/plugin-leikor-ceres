@@ -144,7 +144,7 @@
                             {{ Twig.endif() }}
                         {% endif %}
 
-                        {% if enableBasketPreview and services.customer.getContactId() %}
+                        {% if enableBasketPreview and services.customer.getContactId() and services.customer.getContactClassId() != 13 %}
                             <li class="list-inline-item control-basket">
                                 <a v-toggle-basket-preview href="#" class="toggle-basket-preview">
                                     {% if basketValues != "sum" %}
