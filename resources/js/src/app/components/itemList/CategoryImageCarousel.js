@@ -1,3 +1,6 @@
+import Vue from "vue";
+import "owl.carousel";
+
 Vue.component("category-image-carousel", {
 
     delimiters: ["${", "}"],
@@ -132,23 +135,6 @@ Vue.component("category-image-carousel", {
             const altText = image && image.alternate ? image.alternate : this.altText;
 
             return altText;
-        },
-
-        loadFirstImage()
-        {
-            const itemLazyImage = this.$refs.itemLazyImage;
-
-            if (itemLazyImage)
-            {
-                if (itemLazyImage.loadImage)
-                {
-                    itemLazyImage.loadImage();
-                }
-                else if (itemLazyImage[0] && itemLazyImage[0].loadImage)
-                {
-                    itemLazyImage[0].loadImage();
-                }
-            }
         }
     }
 });

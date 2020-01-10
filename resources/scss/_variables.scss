@@ -1,7 +1,7 @@
 //
 // Variables
 // --------------------------------------------------
-
+$enable-deprecation-messages: false;
 
 //
 // Colors
@@ -60,6 +60,17 @@ $yiq-text-dark:             $gray-900 !default;
 $yiq-text-light:            $white !default;
 $yiq-contrasted-threshold:  186 !default;
 
+
+//
+// Sizes
+//
+$heights: (
+  1: (xs: 36px, sm: 48px, md: 64px, lg: 72px, xl: 80px),
+  2: (xs: 72px, sm: 90px, md: 128px, lg: 144px, xl: 160px),
+  3: (xs: 128px, sm: 160px, md: 192px, lg: 224px, xl: 256px),
+  4: (xs: 200px, sm: 244px, md: 288px, lg: 332px, xl: 376px),
+  5: (xs: 272px, sm: 328px, md: 384px, lg: 440px, xl: 496px)
+) !default;
 //
 // Fonts
 //
@@ -234,25 +245,27 @@ $zindex-fixed:                      $zIndex-3 !default;
 $zindex-modal-backdrop:             $zIndex-7 !default;
 $zindex-modal:                      $zIndex-8 !default;
 $zindex-popover:                    $zIndex-10 !default;
-$zindex-sticky:                     $zIndex-3 !default;
+$zindex-sticky:                     $zIndex-2 !default;
 $zindex-tooltip:                    $zIndex-7 !default;
-$zindex-wrapper-top:                $zIndex-9 !default;
+$zindex-wrapper:                    $zIndex-10 !default;
 
 // Navbar
 $navbar-background-color:           $gray-lightest !default;
 $navbar-dark-color:                 $gray !default;
 $navbar-dark-disabled-color:        $gray-light !default;
 
-
 // Navs
-
 $nav-link-padding-y:                1.3rem !default;
 $nav-link-hover-bg:                 $brand-primary !default;
-
 $nav-tabs-border-color:             #ddd !default;
 
+// Sidenavigation
+$nav-link-expandable-margin:        1.25rem !default;
 
 // Popovers
+$popover-max-width:                 276px !default;
+$popover-max-width-md:              414px !default;
+$popover-max-width-lg:              552px !default;
 $popover-inner-padding:             1px !default;
 
 // Padding applied to the modal body
@@ -262,19 +275,14 @@ $modal-lg:                          900px !default;
 $modal-md:                          600px !default;
 $modal-sm:                          300px !default;
 
-
-
 // Breadcrumbs
-
 $breadcrumb-padding-y:              .5rem !default;
 $breadcrumb-bg:                     darken($gray-lighter2, 2%) !default;
 
 // Category
-
 $category-text-color:               #fff !default;
 
 // Liveshopping
-
 $live-shopping-padding-x:           0.8rem;
 $live-shopping-padding-y:           1rem;
 

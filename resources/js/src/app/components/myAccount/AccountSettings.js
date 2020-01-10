@@ -1,8 +1,10 @@
-const ModalService        = require("services/ModalService");
-const APIService          = require("services/ApiService");
-const NotificationService = require("services/NotificationService");
+const ModalService        = require("../../services/ModalService");
+const APIService          = require("../../services/ApiService");
+const NotificationService = require("../../services/NotificationService");
+const ValidationService   = require("../../services/ValidationService");
 
-import TranslationService from "services/TranslationService";
+import TranslationService from "../../services/TranslationService";
+import Vue from "vue";
 
 Vue.component("account-settings", {
 
@@ -60,11 +62,14 @@ Vue.component("account-settings", {
         {
             return this.newMail2.length <= 0 || this.newMail === this.newMail2;
         },
+        matchOldEmail()
+        {
+            return this.newMail === this.newMail2 && this.newMail === this.userData.email;
+        },
         matchPassword()
         {
             return this.confirmPassword.length <= 0 || this.newPassword === this.confirmPassword;
         },
-
         isValidEmail()
         {
             return this.newMail.length > 0 && (this.newMail === this.newMail2) && this.newMail !== this.userData.email;
@@ -91,6 +96,26 @@ Vue.component("account-settings", {
         showChangeAccountPassword()
         {
             this.accountPasswordModal.show();
+        },
+
+        /**
+         * Checks the new password to see if it meets the password requirements
+         */
+        validatePassword: function()
+        {
+            ValidationService.validate(this.$refs.passwordFormControl)
+                .done(() =>
+                {
+                    this.saveAccountPassword();
+                })
+                .fail(invalidFields =>
+                {
+                    ValidationService.markInvalidFields(invalidFields, "error");
+                    NotificationService.error(
+                        TranslationService.translate("Ceres::Template.resetPwInvalidPassword")
+                    ).closeAfter(5000);
+                    this.$refs.passwordHint.showPopper();
+                });
         },
 
         /**

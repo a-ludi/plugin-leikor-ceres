@@ -19,7 +19,7 @@
     <div class="row">
         <div
             class="col-12 col-sm-6"
-            v-if="isInOptionalFields('de', 'delivery_address.salutation') && value.addressSalutation === 2 || isInOptionalFields('de', 'delivery_address.name1') && !isInOptionalFields('de', 'delivery_address.salutation')">
+            v-if="isInOptionalFields('de', 'delivery_address.salutation') && value.gender === 'company' || isInOptionalFields('de', 'delivery_address.name1') && !isInOptionalFields('de', 'delivery_address.salutation')">
             <div class="input-unit" data-model="name1" data-validate="text">
                 <input type="text" name="company" :id="'txtCompany' + _uid" :value="value.name1" @input="emitInputEvent('name1', $event.target.value)">
                 <label :for="'txtCompany' + _uid">{{ trans("Ceres::Template.addressCompany") }}*</label>
@@ -47,7 +47,7 @@
             <div class="col-12 col-sm-4">
                 <div class="input-unit" data-model="name2" v-validate:text="areNameFieldsRequired('de', 'delivery_address')">
                     <input type="text" name="firstName" :id="'txtFirstName' + _uid" :value="value.name2" @input="emitInputEvent('name2', $event.target.value)">
-                    <label :for="'txtFirstName' + _uid">{{ trans("Ceres::Template.addressFirstName") }}<span v-if="areNameFieldsRequired('de', 'delivery_address')">*</span></label>
+                    <label :for="'txtFirstName' + _uid">{{ trans("Ceres::Template.addressFirstName") }}<template v-if="areNameFieldsRequired('de', 'delivery_address')">*</template></label>
                 </div>
             </div>
     
@@ -55,7 +55,7 @@
             <div class="col-12 col-sm-4">
                 <div class="input-unit" data-model="name3" v-validate:text="areNameFieldsRequired('de', 'delivery_address')">
                     <input type="text" name="lastName" :id="'txtLastName' + _uid" :value="value.name3" @input="emitInputEvent('name3', $event.target.value)">
-                    <label :for="'txtLastName' + _uid">{{ trans("Ceres::Template.addressLastName") }}<span v-if="areNameFieldsRequired('de', 'delivery_address')">*</span></label>
+                    <label :for="'txtLastName' + _uid">{{ trans("Ceres::Template.addressLastName") }}<template v-if="areNameFieldsRequired('de', 'delivery_address')">*</template></label>
                 </div>
             </div>
         </template>
