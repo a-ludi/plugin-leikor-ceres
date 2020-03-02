@@ -72,7 +72,7 @@ class TwigJsonDataContainer extends Twig_Extension
         return $uid;
     }
 
-    public function getJsonData(bool $isAuthorized)
+    public function getJsonData(boolean $isAuthorized)
     {
         $result = [];
         foreach( $this->dataStorage as $uid => $data )
