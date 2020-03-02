@@ -123,10 +123,11 @@ class TwigJsonDataContainer extends Twig_Extension
                 return array();
 
             foreach ($data as $key => $value) {
-                if (array_key_exists($key, $this->$forbiddenKeys))
+                if (array_key_exists($key, $this->$forbiddenKeys)) {
                     $data[$key] = privatize($value, true);
-                else
+                } else {
                     $data[$key] = privatize($value);
+                }
             }
         } else if (is_float($data)) {
             if ($shouldHide)
@@ -144,7 +145,7 @@ class TwigJsonDataContainer extends Twig_Extension
             return NULL;
         }
 
-        return $data
+        return $data;
     }
 
     /**
