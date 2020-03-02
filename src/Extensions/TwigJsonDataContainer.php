@@ -17,6 +17,27 @@ class TwigJsonDataContainer extends Twig_Extension
 
     private $dataStorage = [];
 
+    private $forbiddenKeys = array(
+        'basePrice' => 1,
+        'basePriceNet' => 1,
+        'baseSinglePrice' => 1,
+        'categoryDiscount' => 1,
+        'categoryDiscountNet' => 1,
+        'categoryDiscountPercent' => 1,
+        'contactClassDiscount' => 1,
+        'customerClassDiscount' => 1,
+        'customerClassDiscountNet' => 1,
+        'customerClassDiscountPercent' => 1,
+        'graduatedPrices' => 1,
+        'mayShowUnitPrice' => 1,
+        'price' => 1,
+        'priceNet' => 1,
+        'prices' => 1,
+        'salesPriceId' => 1,
+        'unitPrice' => 1,
+        'unitPriceNet' => 1,
+    );
+
     /**
      * TwigStyleScriptTagFilter constructor.
      * @param TwigFactory $twig
@@ -85,27 +106,6 @@ class TwigJsonDataContainer extends Twig_Extension
         return implode("", $result);
     }
 
-    private $forbiddenKeys = array(
-        'basePrice' => 1,
-        'basePriceNet' => 1,
-        'baseSinglePrice' => 1,
-        'categoryDiscount' => 1,
-        'categoryDiscountNet' => 1,
-        'categoryDiscountPercent' => 1,
-        'contactClassDiscount' => 1,
-        'customerClassDiscount' => 1,
-        'customerClassDiscountNet' => 1,
-        'customerClassDiscountPercent' => 1,
-        'graduatedPrices' => 1,
-        'mayShowUnitPrice' => 1,
-        'price' => 1,
-        'priceNet' => 1,
-        'prices' => 1,
-        'salesPriceId' => 1,
-        'unitPrice' => 1,
-        'unitPriceNet' => 1,
-    );
-
     private function privatize($data, $shouldHide = false)
     {
         if (is_object($data)) {
@@ -113,7 +113,7 @@ class TwigJsonDataContainer extends Twig_Extension
                 return NULL;
 
             foreach (get_object_vars($privatized) as $key => $value) {
-                if (array_key_exists($key, $this->$forbiddenKeys))
+                if (array_key_exists($key, $this->forbiddenKeys))
                     $data->$key = privatize($value, true);
                 else
                     $data->$key = privatize($value);
@@ -123,7 +123,7 @@ class TwigJsonDataContainer extends Twig_Extension
                 return array();
 
             foreach ($data as $key => $value) {
-                if (array_key_exists($key, $this->$forbiddenKeys)) {
+                if (array_key_exists($key, $this->forbiddenKeys)) {
                     $data[$key] = privatize($value, true);
                 } else {
                     $data[$key] = privatize($value);
