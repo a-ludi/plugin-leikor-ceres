@@ -77,7 +77,7 @@ class TwigJsonDataContainer extends Twig_Extension
         $result = [];
         foreach( $this->dataStorage as $uid => $data )
         {
-            $json = $isAuthorized ? $data : json_encode(privatize(json_decode($data)))
+            $json = $isAuthorized ? $data : json_encode(privatize(json_decode($data)));
 
             $result[] = "<script type=\"application/json\" id=\"" . $uid . "\">" . $json . "</script>";
         }
