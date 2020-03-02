@@ -98,34 +98,24 @@ class TwigJsonDataContainer extends Twig_Extension
         foreach( $this->dataStorage as $uid => $data )
         {
             $result[] = "<script type=\"application/json\" id=\"" . $uid . "\">" .
-                ($isAuthorized ? $data : json_encode(privatize(json_decode($data)))) .
+                ($isAuthorized ? $data : json_encode(hidePrivate(json_decode($data)))) .
                 "</script>";
         }
 
         return implode("", $result);
     }
 
-    private function privatize($data, $shouldHide = false)
+    private function hidePrivate($data, $shouldHide = false)
     {
-        if (is_object($data)) {
-            if ($shouldHide)
-                return NULL;
-
-            foreach (get_object_vars($privatized) as $key => $value) {
-                if (array_key_exists($key, $this->forbiddenKeys))
-                    $data->$key = privatize($value, true);
-                else
-                    $data->$key = privatize($value);
-            }
-        } else if (is_array($data)) {
+        if (is_array($data)) {
             if ($shouldHide)
                 return array();
 
             foreach ($data as $key => $value) {
                 if (array_key_exists($key, $this->forbiddenKeys)) {
-                    $data[$key] = privatize($value, true);
+                    $data[$key] = $this->hidePrivate($value, true);
                 } else {
-                    $data[$key] = privatize($value);
+                    $data[$key] = $this->hidePrivate($value);
                 }
             }
         } else if (is_float($data)) {
