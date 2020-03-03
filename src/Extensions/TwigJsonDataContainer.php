@@ -152,7 +152,6 @@ class TwigJsonDataContainer extends Twig_Extension
         return $this->_privatize($data, $this->privatizeSpec);
     }
 
-
     private function _privatize($data, array $spec)
     {
         foreach ($spec as $specKey => $subSpec) {
