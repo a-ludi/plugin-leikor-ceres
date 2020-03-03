@@ -212,7 +212,7 @@ class TwigJsonDataContainer extends Twig_Extension
                     return $subSpec;
 
                 case '$refs':
-                    # ignore
+                    # ignore; this is used at the top of the function
                     break;
 
                 default:
