@@ -71,12 +71,16 @@ class TwigJsonDataContainer extends Twig_Extension
         return $uid;
     }
 
-    public function getJsonData()
+    public function getJsonData($isAuthorized)
     {
         $result = [];
         foreach( $this->dataStorage as $uid => $data )
         {
-            $result[] = "<script type=\"application/json\" id=\"" . $uid . "\">" . $data . "</script>";
+            $result[] = "<script type=\"application/json\" id=\"" . $uid . "\">" .
+                ($isAuthorized
+                    ? $data
+                    : json_encode($this->privatize(json_decode($data)))) .
+                "</script>";
         }
 
         return implode("", $result);
@@ -90,5 +94,132 @@ class TwigJsonDataContainer extends Twig_Extension
     public function getGlobals(): array
     {
         return [];
+    }
+
+    // BEGIN privatize
+
+    private $privatizeSpec = array(
+            '**' => array(
+                'prices' => array(
+                    'graduatedPrices' => array(
+                        '*' => '$refs[priceCompound]',
+                    ),
+                    '*' => '$refs[priceCompound]',
+                ),
+            ),
+            '$refs' => array(
+                'priceCompound' => array(
+                    'price' => '$refs[singlePrice]',
+                    'unitPrice' => '$refs[singlePrice]',
+                    'basePrice' => array('$value' => ''),
+                    'baseSinglePrice' => array('$value' => null),
+                    'contactClassDiscount' => '$refs[singleDiscount]',
+                    'categoryDiscount' => '$refs[singleDiscount]',
+                    'data' => array(
+                        'salesPriceId' => array('$value' => 1),
+                        'price' => array('$value' => -0.00),
+                        'priceNet' => array('$value' => -0.00),
+                        'basePrice' => array('$value' => -0.00),
+                        'basePriceNet' => array('$value' => -0.00),
+                        'unitPrice' => array('$value' => -0.00),
+                        'unitPriceNet' => array('$value' => -0.00),
+                        'customerClassDiscountPercent' => array('$value' => 0),
+                        'customerClassDiscount' => array('$value' => 0),
+                        'customerClassDiscountNet' => array('$value' => 0),
+                        'categoryDiscountPercent' => array('$value' => 0),
+                        'categoryDiscount' => array('$value' => 0),
+                        'categoryDiscountNet' => array('$value' => 0),
+                    ),
+                ),
+                'singlePrice' => array(
+                    'value' => array('$value' => -0.00),
+                    'formatted' => array('$value' => '-0,00 EUR'),
+                ),
+                'singleDiscount' => array(
+                    'percent' => array('$value' => 0),
+                    'amount' => array('$value' => 0),
+                ),
+            ),
+        );
+
+    public function __construct(array $privatizeSpec)
+    {
+        $this->privatizeSpec = $privatizeSpec;
+    }
+
+    public function privatize($data)
+    {
+        return $this->_privatize($data, $this->privatizeSpec);
+    }
+
+    private function _privatize($data, array $spec)
+    {
+        foreach ($spec as $specKey => $subSpec) {
+            if (is_string($subSpec) && 1 === preg_match('/^\$refs\[([^\]]+)\]$/', $subSpec, $matches))
+            {
+                $refKey = $matches[1];
+
+                if (!array_key_exists('$refs', $this->privatizeSpec))
+                    error_log('no $refs defined in privatizeSpec');
+                if (!array_key_exists($refKey, $this->privatizeSpec['$refs']))
+                    error_log('undefined reference in privatizeSpec: ' . $refKey);
+
+                $subSpec = $this->privatizeSpec['$refs'][$refKey];
+            }
+
+            switch ($specKey) {
+                case '**':
+                case '*':
+                case '$value':
+                case '$refs':
+                    # these cases will be handled below
+                    break;
+                default:
+                    # named field
+                    if(is_array($data) && array_key_exists($specKey, $data)) {
+                        $data[$specKey] = $this->_privatize($data[$specKey], $subSpec);
+                    } else if(is_object($data) && property_exists($data, $specKey)) {
+                        foreach ($data as $key => &$value) {
+                            if ($key === $specKey)
+                                $value = $this->_privatize($value, $subSpec);
+                        }
+                    }
+
+                    continue 2;
+            }
+
+            switch ($specKey) {
+                case '**':
+                    # recursive descent
+                    if (is_array($data) || is_object($data)) {
+                        foreach ($data as $key => &$value)
+                            $value = $this->_privatize(
+                                $this->_privatize($value, $subSpec),
+                                $spec,
+                            );
+                    }
+                    break;
+
+                case '*':
+                    # match all fields
+                    if (is_array($data) || is_object($data)) {
+                        foreach ($data as $key => &$value)
+                            $value = $this->_privatize($value, $subSpec);
+                    }
+                    break;
+
+                case '$value':
+                    return $subSpec;
+
+                case '$refs':
+                    # ignore
+                    break;
+
+                default:
+                    error_log('unreachable; should be handled above');
+            }
+        }
+
+        return $data;
     }
 }
