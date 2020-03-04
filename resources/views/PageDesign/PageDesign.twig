@@ -221,7 +221,11 @@
 
 {{ Translations.add( "Ceres", "Template" ) }}
 
-{{ get_json_data() }}
+{% if services.customer.getContactId() and services.customer.getContactClassId() != 13 %}
+    {{ get_private_json_data() }}
+{% else %}
+    {{ get_json_data() }}
+{% endif %}
 
 {% if ceresConfig.log.performanceLevel  == 'development' %}
     <script src="{{ plugin_path('Ceres') }}/js/dist/ceres.js?v={{ buildHash }}"></script>
