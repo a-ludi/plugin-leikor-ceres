@@ -13,7 +13,7 @@
                 {% set rebatedAmountTotal = 0 %}
 
                 {% for item in orderData.order.orderItems %}
-                    
+
                     {% if loop.index == initialMaxItemsPerOrder + 1 %}
                         <div v-if="showAllOrderItems">
                     {% endif %}
@@ -153,12 +153,9 @@
     <div class="row container-bottom border py-4">
         <div class="col-md-7">
             <div class="row">
-                <div class="col-sm-4">                            
+                <div class="col-sm-4">
                     <h5 class="mb-0"><b>{{ trans("Ceres::Template.orderHistoryPaymentMethod") }}</b></h5>
                     <div class="mb-3" id="payment_name_{{ orderData.order.id }}">{{ orderData.paymentMethodName }}</div>
-
-                    <h5 class="mb-0"><b>{{ trans("Ceres::Template.orderHistoryPaymentStatus") }}</b></h5>
-                    <div class="mb-3" id="payment_state_{{ orderData.order.id }}">{{ trans("Ceres::Template.orderHistoryPaymentStatus_" ~ orderData.paymentStatus) }}</div>
 
                     <h5 class="mb-0"><b>{{ trans("Ceres::Template.orderHistoryShippingProfile") }}</b></h5>
                     <div class="mb-3">{{ orderData.shippingProvider }} - {{ orderData.shippingProfileName }}</div>
@@ -195,14 +192,14 @@
                 </change-payment-method>
                 {{ LayoutContainer.show("Ceres::MyAccount.OrderHistoryPaymentInformation", orderData.order) }}
             </template>
-            
+
             {% if orderData.isReturnable %}
                 <a v-if="allowReturn" v-waiting-animation-infinite class="btn btn-block btn-appearance btn-appearance mb-2" href="{{ urls.returns(orderData.order.id) }}">
                     <i class="fa fa-repeat fa-flip-horizontal" aria-hidden="true"></i>
                     {{ trans("Ceres::Template.orderHistoryReturnSendBack") }}
                 </a>
             {% endif %}
-            
+
             <order-documents :documents="{{ orderData.order.documents | json_encode }}"></order-documents>
         </div>
     </div>
